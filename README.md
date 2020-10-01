@@ -1,0 +1,2 @@
+# xcode-notarize
+Xcode Notarize

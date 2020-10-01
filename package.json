@@ -1,0 +1,37 @@
+{
+  "name": "xcode-notarize",
+  "version": "1.0.0",
+  "description": "GitHub Action to notarize macOS products.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "npm run lint && npm run prepare && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devbotsxyz/xcode-notarize.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "Xcode"
+  ],
+  "author": "Stefan Arentz <stefan@devbots.xyz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devbotsxyz/xcode-notarize/issues"
+  },
+  "homepage": "https://github.com/devbotsxyz/xcode-notarize#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.5",
+    "execa": "^4.0.3",
+    "plist": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.24.1",
+    "eslint": "^7.4.0",
+    "jest": "^26.4.2"
+  }
+}
