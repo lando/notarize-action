@@ -1,6 +1,22 @@
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/
+// MIT License - Copyright (c) 2020 Stefan Arentz <stefan@devbots.xyz>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 
 const fs = require('fs');
@@ -21,14 +37,12 @@ const parseConfiguration = () => {
         username: core.getInput("appstore-connect-username", {required: true}),
         password: core.getInput("appstore-connect-password", {required: true}),
         primaryBundleId: core.getInput("primary-bundle-id"),
-        verbose: core.getInput("verbose") == "true",
+        verbose: core.getInput("verbose") === "true",
     };
 
     if (!fs.existsSync(configuration.productPath)) {
         throw Error(`Product path ${configuration.productPath} does not exist.`);
     }
-
-    console.log("CONFIGURATION:", configuration);
 
     return configuration
 };
@@ -44,8 +58,6 @@ const archive = async ({productPath}) => {
         productPath,    // Source
         archivePath,    // Destination
     ];
-
-    //console.log("Executing", "ditto", args);
 
     try {
         await execa("ditto", args);
@@ -107,8 +119,6 @@ const submit = async ({productPath, archivePath, primaryBundleId, username, pass
         args.push("--verbose");
     }
 
-    //console.log("Executing", "xcrun", args);
-
     let xcrun = execa("xcrun", args, {reject: false});
 
     if (verbose == true) {
@@ -122,8 +132,6 @@ const submit = async ({productPath, archivePath, primaryBundleId, username, pass
         // TODO Command did not run at all
         throw Error("Unknown failure - altool did not run at all?");
     }
-
-    console.log(stdout);
 
     if (exitCode !== 0) {
         // TODO Maybe print stderr - see where that ends up in the output? console.log("STDERR", stderr);
@@ -161,8 +169,6 @@ const wait = async ({uuid, username, password, verbose}) => {
         args.push("--verbose");
     }
 
-    //console.log("Executing", "xcrun", args, {reject: false});
-
     for (let i = 0; i < 10; i++) {
         let xcrun = execa("xcrun", args, {reject: false});
 
@@ -172,8 +178,6 @@ const wait = async ({uuid, username, password, verbose}) => {
         }
 
         const {exitCode, stdout, stderr} = await xcrun;
-
-        console.log(stdout);
 
         if (exitCode === undefined) {
             // TODO Command did not run at all
