@@ -4,16 +4,20 @@ on:
   pull_request:
 
 jobs:
-  notarize-test:
+  notarize-tests:
     runs-on: ${{ matrix.os }}
     env:
       term: xterm
     strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-12
         node-version:
           - '16'
+        tool:
+          - altool
+          - notarytool
 
     steps:
       - name: Checkout code
@@ -45,8 +49,10 @@ jobs:
         with:
           appstore-connect-username: ${{ secrets.APPLE_NOTARY_USER }}
           appstore-connect-password: ${{ secrets.APPLE_NOTARY_PASSWORD }}
+          appstore-connect-team-id: FY8GAUX282
           primary-bundle-id: dev.lando.notarize-action
           product-path: ${{ steps.code-sign-action.outputs.file }}
+          tool: ${{ matrix.tool }}
           verbose: true
 
       - name: "TEST: should notarize the file at input.product-path"

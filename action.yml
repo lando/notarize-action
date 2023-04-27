@@ -14,6 +14,10 @@ inputs:
   appstore-connect-password:
     description: "The AppStore Connect password."
     required: true
+  appstore-connect-team-id:
+    description: "The Apple Developer account Team ID. Only required when using notarytool."
+    required: true
+
   appstore-connect-api-key:
     description: "The AppStore Connect API Key."
     required: false
@@ -23,6 +27,14 @@ inputs:
   primary-bundle-id:
     description: "A unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading."
     required: false
+  team:
+    description: "The xcrun notarization tool to use."
+    required: false
+    defualt: notarytool
+  tool:
+    description: "The xcrun notarization tool to use."
+    required: false
+    defualt: notarytool
   verbose:
     description: "Verbose mode will print Notarization API responses."
     required: false
