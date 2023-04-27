@@ -13,8 +13,8 @@ These keys must be set correctly for the action to work.
 | Name | Description | Example Value |
 |---|---|---|
 | `product-path` | The path to the product to notarize.  | `/dist/MyApp.app` |
-| `appstore-connect-username` | The AppStore Connect username. | ${{ secrets.NOTARIZATION_USERNAME }} |
-| `appstore-connect-password` | appstore-connect-password. | ${{ secrets.NOTARIZATION_PASSWORD }} |
+| `appstore-connect-username` | The AppStore Connect username. | `${{ secrets.NOTARIZATION_USERNAME }}` |
+| `appstore-connect-password` | appstore-connect-password. | `${{ secrets.NOTARIZATION_PASSWORD }}` |
 
 ## Optional Inputs
 
@@ -22,8 +22,8 @@ These keys are set to sane defaults but can be modified as needed.
 
 | Name | Description | Default | Example |
 |---|---|---|---|
-| `appstore-connect-api-key` | The AppStore Connect API Key. | `null` | ${{ secrets.NOTARIZATION_API_KEY }}|
-| `appstore-connect-api-issuer` | The AppStore Connect API Issuer. | `null` | ${{ secrets.NOTARIZATION_API_ISSUER }}|
+| `appstore-connect-api-key` | The AppStore Connect API Key. | `null` | `${{ secrets.NOTARIZATION_API_KEY }}` |
+| `appstore-connect-api-issuer` | The AppStore Connect API Issuer. | `null` | `${{ secrets.NOTARIZATION_API_ISSUER }}` |
 | `primary-bundle-id` | A unique identifier that identifies this product notarization. | bundle identifier of the app you are uploading. | `dev.lando.my-app |
 | `verbose` | Verbose mode will print Notarization API responses. | `false` | `true` |
 
@@ -40,7 +40,9 @@ These keys are set to sane defaults but can be modified as needed.
     appstore-connect-password: ${{ secrets.NOTARIZATION_PASSWORD }}
 ```
 
-Note that notarization is not the final step. After Apple has notarized your application, you also want to _staple_ a notarization ticket to your product. This can be done with the [Xcode Staple](https://github.com/marketplace/actions/xcode-staple) action.
+Note that notarization is not the final step. After Apple has notarized your application, you also want to _staple_ a notarization ticket to your product.
+
+This can be done with the [Xcode Staple](https://github.com/marketplace/actions/xcode-staple) action.
 
 ## Changelog
 
