@@ -48,10 +48,8 @@ jobs:
           primary-bundle-id: dev.lando.notarize-action
           product-path: ${{ steps.code-sign-action.outputs.file }}
           verbose: true
-      - name: Test outputs
+
+      - name: "TEST: should notarize the file at input.product-path"
+        if: always()
+        run: codesign -vvvv -R="notarized" --check-notarization ${{ steps.notarize-sign-action.outputs.product-path }}
         shell: bash
-        env:
-          FILE: ${{ steps.code-sign-action.outputs.file }}
-        run: |
-          chmod +x "$FILE"
-          "$FILE"
