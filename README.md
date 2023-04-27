@@ -1,10 +1,10 @@
 # Notarize Action
 
-This action Apple notarizes macOS applications or plug-ins. It does this by submitting your built `.app` (or non-app bundle) to Apple's notarization service. It will poll the notarization service until it times out of receives a success response.
+This action Apple-notarizes macOS applications or plug-ins. It does this by submitting your built `.app` (or non-app bundle) to Apple's notarization service.
 
-It was originally adapted from https://github.com/devbotsxyz/xcode-notarize
+It uses `notarytool` by default but can be configured to use `altool`. In the case of the latter it will poll the notarization service until it times out or receives a success response.
 
-> Notarization is a complicated process, but the gist of it is this: if you want to distribute your macOS application outside of the Mac App Store, you need to Sign and Notarize your application. This Action only needs two inputs for that: the `product-path` that points your application and your AppStore Connect credentials with `appstore-connect-username` / `appstore-connect-password`. (This need to be an _App Specific Password_ as regular accounts require 2FA)
+> **NOTE:** Originally forked from https://github.com/devbotsxyz/xcode-notarize
 
 ## Required Inputs
 
@@ -15,7 +15,7 @@ These keys must be set correctly for the action to work.
 | `product-path` | The path to the product to notarize.  | `/dist/MyApp.app` |
 | `appstore-connect-username` | The AppStore Connect username. | `${{ secrets.NOTARIZATION_USERNAME }}` |
 | `appstore-connect-password` | The AppStore Connect password. | `${{ secrets.NOTARIZATION_PASSWORD }}` |
-| `appstore-connect-team-id` | The AppStore Connect team id. Only required when using `notarytool`. | FY8GAUX283 |
+| `appstore-connect-team-id` | The AppStore Connect team id. Only required when using `notarytool`. | `FY8GAUX283` |
 
 ## Optional Inputs
 
@@ -25,7 +25,7 @@ These keys are set to sane defaults but can be modified as needed.
 |---|---|---|---|
 | `appstore-connect-api-key` | The AppStore Connect API Key. | `null` | `${{ secrets.NOTARIZATION_API_KEY }}` |
 | `appstore-connect-api-issuer` | The AppStore Connect API Issuer. | `null` | `${{ secrets.NOTARIZATION_API_ISSUER }}` |
-| `primary-bundle-id` | A unique identifier that identifies this product notarization. | bundle identifier of the app you are uploading. | `dev.lando.my-app |
+| `primary-bundle-id` | A unique identifier that identifies this product notarization. | bundle identifier of the app you are uploading. | `dev.lando.my-app` |
 | `tool` | The `xcrun` notarization tool to use. | `notarytool` | `altool` |
 | `verbose` | Verbose mode will print Notarization API responses. | `false` | `true` |
 
@@ -40,6 +40,7 @@ These keys are set to sane defaults but can be modified as needed.
     product-path: "/dist/MyApp.app"
     appstore-connect-username: ${{ secrets.NOTARIZATION_USERNAME }}
     appstore-connect-password: ${{ secrets.NOTARIZATION_PASSWORD }}
+    appstore-connect-team-id: FY8GAUX283
 ```
 
 Note that notarization is not the final step. After Apple has notarized your application, you also want to _staple_ a notarization ticket to your product.
