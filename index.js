@@ -96,6 +96,7 @@ const submitNotaryTool = async ({productPath, archivePath, primaryBundleId, user
     '--apple-id', username,
     '--password', password,
     '--team-id', team,
+    '--output-format', 'json',
     '--wait',
   ];
 
