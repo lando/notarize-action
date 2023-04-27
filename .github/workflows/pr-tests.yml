@@ -10,8 +10,10 @@ jobs:
       term: xterm
     strategy:
       matrix:
-        os: macos-12
-        node-version: '16'
+        os:
+          - macos-12
+        node-version:
+          - '16'
 
     steps:
       - name: Checkout code
