@@ -29,18 +29,16 @@ jobs:
         run: yarn install --prefer-offline --frozen-lockfile
       - name: Package node binary
         run: yarn build
-
       - name: Sign
         uses: lando/code-sign-action@v2
         id: code-sign-action
         with:
-          file: "@lando/notarize-action"
+          file: "dist/@lando/notarize-action"
           certificate-data: ${{ secrets.APPLE_CERT_DATA }}
           certificate-password: ${{ secrets.APPLE_CERT_PASSWORD }}
           apple-product-id: dev.lando.notarize-action
           apple-team-id: FY8GAUX282
           options: --options runtime --entitlements entitlements.xml
-
       - name: Notarize
         uses: ./
         id: notarize-sign-action
