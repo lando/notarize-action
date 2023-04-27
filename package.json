@@ -1,37 +1,40 @@
 {
-  "name": "xcode-notarize",
-  "version": "1.0.0",
+  "name": "@lando/notarize-action",
   "description": "GitHub Action to notarize macOS products.",
+  "version": "2.0.2",
+  "author": "Mike Pirog @pirog",
   "main": "index.js",
-  "scripts": {
-    "lint": "eslint .",
-    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
-    "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/devbotsxyz/xcode-notarize.git"
-  },
+  "license": "GPL-3.0",
+  "repository": "https://github.com/lando/notarize-action",
+  "bugs": "https://github.com/lando/notarize-action/issues",
+  "homepage": "https://github.com/lando/notarize-action",
   "keywords": [
-    "GitHub",
-    "Actions",
-    "Xcode"
+    "lando",
+    "transfer github issue",
+    "Github Actions"
   ],
-  "author": "Stefan Arentz <stefan@devbots.xyz>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/devbotsxyz/xcode-notarize/issues"
+  "engines": {
+    "node": ">=14.0.0"
   },
-  "homepage": "https://github.com/devbotsxyz/xcode-notarize#readme",
   "dependencies": {
     "@actions/core": "^1.2.5",
     "execa": "^4.0.3",
     "plist": "^3.0.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.0",
     "@vercel/ncc": "^0.24.1",
-    "eslint": "^7.4.0",
-    "jest": "^26.4.2"
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "jest": "^26.4.2",
+    "pkg": "^5.8.1",
+    "version-bump-prompt": "^6.1.0"
+  },
+  "scripts": {
+    "build": "yarn pkg -c package.json -t node14 bin/test",
+    "lint": "eslint .",
+    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "release": "yarn prepare && bump --tag --all --push package.json && git tag --force --annotate --message 'moving v2 tag' v2 && git push origin v2 --force",
+    "test": "jest"
   }
 }

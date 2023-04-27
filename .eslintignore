@@ -1,1 +1,4 @@
-dist/
+.temp
+.cache
+dist
+_site
