@@ -1,53 +1,28 @@
-# MIT License - Copyright (c) 2020 Stefan Arentz <stefan@devbots.xyz>
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-name: 'Xcode Notarize'
-description: 'Notarize your Mac application or plugin.'
-
+name: 'Notarize Action'
+description: 'Apple notarizes your stuffs'
 branding:
-  icon: 'command'
-  color: 'blue'
+  icon: zap
+  color: purple
 
 inputs:
   product-path:
-    description: "Path to the product to notarize."
+    description: "The path to the product to notarize."
     required: true
-
   appstore-connect-username:
     description: 'The AppStore Connect username.'
     required: false
   appstore-connect-password:
     description: 'The AppStore Connect password.'
     required: false
-
   appstore-connect-api-key:
     description: 'The AppStore Connect API Key.'
     required: false
   appstore-connect-api-issuer:
     description: 'The AppStore Connect API Issuer.'
     required: false
-
   primary-bundle-id:
-    description: 'Unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading.'
+    description: 'A unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading.'
     required: false
-
   verbose:
     description: "Verbose mode will print Notarization API responses."
     required: false
@@ -55,8 +30,8 @@ inputs:
 
 outputs:
   product-path:
-    description: "Path to the product that was notarized"
+    description: "The path to the product that was notarized"
 
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
