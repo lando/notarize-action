@@ -9,6 +9,7 @@ jobs:
     env:
       term: xterm
     strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-12
