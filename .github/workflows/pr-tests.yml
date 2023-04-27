@@ -4,7 +4,60 @@ on:
   pull_request:
 
 jobs:
-  notarize-tests:
+  notarize-defaults-test:
+    runs-on: ${{ matrix.os }}
+    env:
+      term: xterm
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-12
+        node-version:
+          - '16'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+      - name: Install Yarn dependencies
+        run: yarn install --prefer-offline --frozen-lockfile
+      - name: Package node binary
+        run: yarn build
+      - name: Sign
+        uses: lando/code-sign-action@v2
+        id: code-sign-action
+        with:
+          file: "@lando/notarize-action"
+          certificate-data: ${{ secrets.APPLE_CERT_DATA }}
+          certificate-password: ${{ secrets.APPLE_CERT_PASSWORD }}
+          apple-product-id: dev.lando.notarize-action
+          apple-team-id: FY8GAUX282
+          options: --options runtime --entitlements entitlements.xml
+      - name: Notarize
+        uses: ./
+        id: notarize-sign-action
+        with:
+          appstore-connect-username: ${{ secrets.APPLE_NOTARY_USER }}
+          appstore-connect-password: ${{ secrets.APPLE_NOTARY_PASSWORD }}
+          appstore-connect-team-id: FY8GAUX282
+          primary-bundle-id: dev.lando.notarize-action
+          product-path: ${{ steps.code-sign-action.outputs.file }}
+          verbose: true
+
+      - name: "TEST: should notarize the file at input.product-path"
+        if: always()
+        run: codesign -vvvv -R="notarized" --check-notarization ${{ steps.notarize-sign-action.outputs.product-path }}
+        shell: bash
+
+
+  notarize-tool-tests:
     runs-on: ${{ matrix.os }}
     env:
       term: xterm
