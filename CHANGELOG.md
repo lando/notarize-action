@@ -1,3 +1,8 @@
+## v2.0.1 - [April 27, 2023](https://github.com/lando/notarize-action/releases/tag/v2.0.1)
+
+* Added guard around unsupported `tool`s
+* Fixed bug causing no default `tool` to be set
+
 ## v2.0.0 - [April 27, 2023](https://github.com/lando/notarize-action/releases/tag/v2.0.0)
 
 * Added support for both `altool` and `notarytool`
