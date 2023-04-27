@@ -14,6 +14,8 @@ const core = __webpack_require__(2186);
 const execa = __webpack_require__(5447);
 const plist = __webpack_require__(1933);
 
+const supportedTools = ['notarytool', 'altool'];
+
 const sleep = ms => {
   return new Promise(res => setTimeout(res, ms));
 };
@@ -305,6 +307,12 @@ const waitAltool = async ({uuid, username, password, verbose}) => {
 const main = async () => {
   try {
     const configuration = parseConfiguration();
+
+    // check if the tool is supported
+    if (!supportedTools.includes(configuration.tool)) {
+      core.setFailed(`${configuration.tool} is not a supported tool. Please choose one of ${supportedTools.join(', ')}`);
+      return;
+    }
 
     const archivePath = await core.group('Archiving Application', async () => {
       const archivePath = await archive(configuration);
