@@ -1,5 +1,5 @@
-name: 'Notarize Action'
-description: 'Apple notarizes your stuffs'
+name: "Notarize Action"
+description: "Apple notarizes your stuffs"
 branding:
   icon: zap
   color: purple
@@ -9,19 +9,19 @@ inputs:
     description: "The path to the product to notarize."
     required: true
   appstore-connect-username:
-    description: 'The AppStore Connect username.'
-    required: false
+    description: "The AppStore Connect username."
+    required: true
   appstore-connect-password:
-    description: 'The AppStore Connect password.'
-    required: false
+    description: "The AppStore Connect password."
+    required: true
   appstore-connect-api-key:
-    description: 'The AppStore Connect API Key.'
+    description: "The AppStore Connect API Key."
     required: false
   appstore-connect-api-issuer:
-    description: 'The AppStore Connect API Issuer.'
+    description: "The AppStore Connect API Issuer."
     required: false
   primary-bundle-id:
-    description: 'A unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading.'
+    description: "A unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading."
     required: false
   verbose:
     description: "Verbose mode will print Notarization API responses."
@@ -33,5 +33,5 @@ outputs:
     description: "The path to the product that was notarized"
 
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
