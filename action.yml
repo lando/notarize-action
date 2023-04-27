@@ -1,33 +1,28 @@
-name: 'Xcode Notarize'
-description: 'Notarize your Mac application or plugin.'
-
+name: 'Notarize Action'
+description: 'Apple notarizes your stuffs'
 branding:
-  icon: 'command'
-  color: 'blue'
+  icon: zap
+  color: purple
 
 inputs:
   product-path:
-    description: "Path to the product to notarize."
+    description: "The path to the product to notarize."
     required: true
-
   appstore-connect-username:
     description: 'The AppStore Connect username.'
     required: false
   appstore-connect-password:
     description: 'The AppStore Connect password.'
     required: false
-
   appstore-connect-api-key:
     description: 'The AppStore Connect API Key.'
     required: false
   appstore-connect-api-issuer:
     description: 'The AppStore Connect API Issuer.'
     required: false
-
   primary-bundle-id:
-    description: 'Unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading.'
+    description: 'A unique identifier that identifies this product notarization. Defaults to the bundle identifier of the app you are uploading.'
     required: false
-
   verbose:
     description: "Verbose mode will print Notarization API responses."
     required: false
@@ -35,7 +30,7 @@ inputs:
 
 outputs:
   product-path:
-    description: "Path to the product that was notarized"
+    description: "The path to the product that was notarized"
 
 runs:
   using: 'node16'
