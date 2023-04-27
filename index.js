@@ -123,18 +123,19 @@ const submitNotaryTool = async ({productPath, archivePath, primaryBundleId, user
       console.log(response);
     }
 
-    for (const productError of response['product-errors']) {
-      core.error(`${productError.code} - ${productError.message}`);
-    }
-    return null;
+    core.error(`${response.status} - ${response.message}`);
+    return false;
   }
 
+  // presumably we are good if we get here
+  // @NOTE: do we need to worry about non-accepted statuses?
   const response = JSON.parse(stdout);
   if (verbose === true) {
     console.log(response);
   }
 
-  return response;
+  core.info(`Notarization ${response.status} - ${response.message}`);
+  return true;
 };
 
 
@@ -338,19 +339,9 @@ const main = async () => {
 
     // notarytool logix
     } else if (configuration.tool === 'notarytool') {
-      const response = await core.group('Notarizing with notarytool', async () => {
+      const success = await core.group('Notarizing with notarytool', async () => {
         return await submitNotaryTool({archivePath: archivePath, ...configuration});
       });
-
-      console.log(response);
-      console.log('hi bob!');
-
-      if (uuid == null) {
-        core.setFailed('Notarization failed');
-        return;
-      }
-
-      await sleep(15000); // TODO On a busy day, it can take a while before the build can be checked?
 
       if (success == false) {
         core.setFailed('Notarization failed');
