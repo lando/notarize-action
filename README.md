@@ -14,7 +14,8 @@ These keys must be set correctly for the action to work.
 |---|---|---|
 | `product-path` | The path to the product to notarize.  | `/dist/MyApp.app` |
 | `appstore-connect-username` | The AppStore Connect username. | `${{ secrets.NOTARIZATION_USERNAME }}` |
-| `appstore-connect-password` | appstore-connect-password. | `${{ secrets.NOTARIZATION_PASSWORD }}` |
+| `appstore-connect-password` | The AppStore Connect password. | `${{ secrets.NOTARIZATION_PASSWORD }}` |
+| `appstore-connect-team-id` | The AppStore Connect team id. Only required when using `notarytool`. | FY8GAUX283 |
 
 ## Optional Inputs
 
@@ -25,6 +26,7 @@ These keys are set to sane defaults but can be modified as needed.
 | `appstore-connect-api-key` | The AppStore Connect API Key. | `null` | `${{ secrets.NOTARIZATION_API_KEY }}` |
 | `appstore-connect-api-issuer` | The AppStore Connect API Issuer. | `null` | `${{ secrets.NOTARIZATION_API_ISSUER }}` |
 | `primary-bundle-id` | A unique identifier that identifies this product notarization. | bundle identifier of the app you are uploading. | `dev.lando.my-app |
+| `tool` | The `xcrun` notarization tool to use. | `notarytool` | `altool` |
 | `verbose` | Verbose mode will print Notarization API responses. | `false` | `true` |
 
 ##  Usage
