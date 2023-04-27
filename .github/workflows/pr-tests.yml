@@ -33,7 +33,7 @@ jobs:
         uses: lando/code-sign-action@v2
         id: code-sign-action
         with:
-          file: "dist/@lando/notarize-action"
+          file: "@lando/notarize-action"
           certificate-data: ${{ secrets.APPLE_CERT_DATA }}
           certificate-password: ${{ secrets.APPLE_CERT_PASSWORD }}
           apple-product-id: dev.lando.notarize-action
