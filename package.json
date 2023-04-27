@@ -27,7 +27,7 @@
   "dependencies": {
     "@actions/core": "^1.2.5",
     "execa": "^4.0.3",
-    "plist": "^3.0.1"
+    "plist": "^3.0.5"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.24.1",
