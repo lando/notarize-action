@@ -1,3 +1,7 @@
+## v2.0.2 - [June 17, 2023](https://github.com/lando/notarize-action/releases/tag/v2.0.2)
+
+* Switched release flow over to [@lando/prepare-release-action](https://github.com/lando/prepare-release-action)
+
 ## v2.0.1 - [April 27, 2023](https://github.com/lando/notarize-action/releases/tag/v2.0.1)
 
 * Added guard around unsupported `tool`s
