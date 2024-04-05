@@ -69,7 +69,8 @@ jobs:
         node-version:
           - '20'
         tool:
-          - altool
+          # altool is deprecated now and it throws an error if you try to use it
+          # - altool
           - notarytool
 
     steps:
