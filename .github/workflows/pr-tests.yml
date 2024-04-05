@@ -14,7 +14,7 @@ jobs:
         os:
           - macos-13
         node-version:
-          - '18'
+          - '20'
 
     steps:
       - name: Checkout code
@@ -67,7 +67,7 @@ jobs:
         os:
           - macos-13
         node-version:
-          - '18'
+          - '20'
         tool:
           - altool
           - notarytool
