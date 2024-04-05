@@ -30,7 +30,7 @@
     "pkg": "^5.8.1"
   },
   "scripts": {
-    "build": "yarn pkg -c package.json -t node16 bin/test",
+    "build": "npx pkg -c package.json -t node16 bin/test",
     "lint": "eslint .",
     "prepare": "ncc build notarize-action.js -o dist --source-map --license licenses.txt",
     "test": "jest"
