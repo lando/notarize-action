@@ -4,7 +4,7 @@
   "version": "2.0.2",
   "author": "Mike Pirog @pirog",
   "main": "notarize-action.js",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "repository": "https://github.com/lando/notarize-action",
   "bugs": "https://github.com/lando/notarize-action/issues",
   "homepage": "https://github.com/lando/notarize-action",
