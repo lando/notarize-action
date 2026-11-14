@@ -1,5 +1,6 @@
 ## Unreleased
 
+* Updated the project license from GPL-3.0 to MIT.
 * Updated the action runner from Node.js 16 to Node.js 20 and raised the local Node.js minimum to 18.
 * Regenerated the committed action bundle from the production lockfile, including `@actions/core` 1.11.1 and `cross-spawn` 7.0.6. The bundle no longer includes the old core dependency on `uuid`.
 * Fixed invalid unquoted negation expressions that prevented the test workflow from starting.
