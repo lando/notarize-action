@@ -9,3 +9,6 @@
 *.ini text eol=lf
 *.php text eol=lf
 *.vcl text eol=lf
+
+# ncc preserves upstream dependency whitespace in the generated runtime bundle.
+dist/index.js whitespace=-blank-at-eol
