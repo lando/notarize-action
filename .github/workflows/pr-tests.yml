@@ -2,10 +2,45 @@ name: PR Tests
 
 on:
   pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run-notarization:
+        description: Sign and submit the native fixture to Apple (requires repository secrets)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
 
 jobs:
+  test:
+    name: Offline action and bundle tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Install locked dependencies and regenerate bundle
+        run: npm ci
+      - run: npm run lint
+      - run: npm test -- --runInBand
+      - name: Verify the committed action bundle is current
+        run: git diff --exit-code -- dist
+      - name: Build and run native integration fixture (no signing)
+        run: |
+          npm run build
+          ./build/notarize-test
+
   notarize-defaults-test:
-    if: !startsWith(github.head_ref, 'dependabot/')
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run-notarization }}
+    needs: test
     runs-on: ${{ matrix.os }}
     env:
       term: xterm
@@ -19,23 +54,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
       - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile
-      - name: Package node binary
+        run: npm ci
+      - name: Build native test fixture
         run: npm run build
       - name: Sign
         uses: lando/code-sign-action@v2
         id: code-sign-action
         with:
-          file: "@lando/notarize-action"
+          file: build/notarize-test
           certificate-data: ${{ secrets.APPLE_CERT_DATA }}
           certificate-password: ${{ secrets.APPLE_CERT_PASSWORD }}
           apple-product-id: dev.lando.notarize-action
@@ -53,13 +88,15 @@ jobs:
           verbose: true
 
       - name: "TEST: should notarize the file at input.product-path"
-        if: always()
-        run: codesign -vvvv -R="notarized" --check-notarization ${{ steps.notarize-sign-action.outputs.product-path }}
+        run: codesign -vvvv -R="notarized" --check-notarization "$PRODUCT_PATH"
+        env:
+          PRODUCT_PATH: ${{ steps.notarize-sign-action.outputs.product-path }}
         shell: bash
 
 
   notarize-tool-tests:
-    if: !startsWith(github.head_ref, 'dependabot/')
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run-notarization }}
+    needs: test
     runs-on: ${{ matrix.os }}
     env:
       term: xterm
@@ -77,23 +114,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
       - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile
-      - name: Package node binary
+        run: npm ci
+      - name: Build native test fixture
         run: npm run build
       - name: Sign
         uses: lando/code-sign-action@v2
         id: code-sign-action
         with:
-          file: "@lando/notarize-action"
+          file: build/notarize-test
           certificate-data: ${{ secrets.APPLE_CERT_DATA }}
           certificate-password: ${{ secrets.APPLE_CERT_PASSWORD }}
           apple-product-id: dev.lando.notarize-action
@@ -112,6 +149,7 @@ jobs:
           verbose: true
 
       - name: "TEST: should notarize the file at input.product-path"
-        if: always()
-        run: codesign -vvvv -R="notarized" --check-notarization ${{ steps.notarize-sign-action.outputs.product-path }}
+        run: codesign -vvvv -R="notarized" --check-notarization "$PRODUCT_PATH"
+        env:
+          PRODUCT_PATH: ${{ steps.notarize-sign-action.outputs.product-path }}
         shell: bash

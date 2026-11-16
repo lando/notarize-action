@@ -20,9 +20,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -30,6 +30,8 @@ jobs:
         run: npm clean-install
       - name: Lint
         run: npm run lint
+      - name: Test action and bundle without Apple credentials
+        run: npm test -- --runInBand
       - name: Prepare release
         uses: lando/prepare-release-action@v3
         with:

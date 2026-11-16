@@ -75,3 +75,21 @@ Made with [contrib.rocks](https://contrib.rocks).
 * [PRIVACY POLICY](https://docs.lando.dev/privacy)
 * [CODE OF CONDUCT](https://docs.lando.dev/coc)
 
+## Validation before release
+
+Use Node.js 20 and run `npm ci`, `npm run lint`, and `npm test -- --runInBand`.
+The tests run both the source action and the committed standalone bundle using
+fake `ditto` and `xcrun` executables, dummy inputs, and temporary fixture files;
+they do not sign files or submit anything to Apple. `npm run prepare` rebuilds
+`dist` from the lockfile. Commit the generated bundle along with dependency changes.
+
+`npm run build` requires a C compiler and builds an unsigned native test fixture
+at `build/notarize-test`; it does not package or sign the action itself.
+
+The **PR Tests** workflow runs credential-free checks on pull requests and main
+pushes. Real signing/notarization is separate: manually dispatch that workflow
+with `run-notarization` enabled only when intentionally validating against Apple.
+That integration check requires a macOS runner and the repository secrets
+`APPLE_CERT_DATA`, `APPLE_CERT_PASSWORD`, `APPLE_NOTARY_USER`, and
+`APPLE_NOTARY_PASSWORD`. Passing offline tests is not proof that the Apple
+integration has passed.
